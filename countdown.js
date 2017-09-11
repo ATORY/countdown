@@ -1,10 +1,23 @@
 window.IOWA = window.IOWA || {};
 IOWA.CountdownTimer = IOWA.CountdownTimer || {};
 IOWA.CountdownTimer.Band = function(t, e, i, n, r) {
-    this.canvasElement = t, this.parent = i, this.aShift = 2 * (e / 800), this.posShift = 0, this.strokeOffset = 0, this.digits = n, this.oldShape = r, this.currentShape = r, this.radius = 0, this.center = {
+    this.canvasElement = t, 
+    this.parent = i, 
+    this.aShift = 2 * (e / 800), 
+    this.posShift = 0, 
+    this.strokeOffset = 0, 
+    this.digits = n, 
+    this.oldShape = r, 
+    this.currentShape = r, 
+    this.radius = 0, 
+    this.center = {
         x: 0,
         y: 0
-    }, this.quality = e, this.isPlaying = !0, this.needsRedraw = !0, this.colors = [{
+    }, 
+    this.quality = e, 
+    this.isPlaying = !0, 
+    this.needsRedraw = !0, 
+    this.colors = [{
         hex: "#ffffff",
         ratio: 1,
         size: 1,
@@ -49,41 +62,65 @@ IOWA.CountdownTimer.Band = function(t, e, i, n, r) {
     }]
 };
 IOWA.CountdownTimer.Band.prototype.changeShape = function(t) {
-    clearTimeout(this.fadeTimer), this.fade("in"), this.oldShape = this.currentShape, this.currentShape = t, this.posShift = 0, this.tween && this.tween.kill(), this.tween = TweenMax.to(this, .65, {
+    if (t<0) t = 0;
+    clearTimeout(this.fadeTimer), 
+    this.fade("in"), 
+    this.oldShape = this.currentShape, 
+    this.currentShape = t, 
+    this.posShift = 0, 
+    this.tween && this.tween.kill(), 
+    this.tween = TweenMax.to(this, .65, {
         posShift: 1,
         ease: Elastic.easeInOut.config(1, 1),
         delay: 0,
         onComplete: this.onChangeComplete,
         onCompleteParams: [this]
-    }), this.isPlaying = !0
+    }), 
+    this.isPlaying = !0
 };
 IOWA.CountdownTimer.Band.prototype.fade = function(t) {
-    "in" === t ? (TweenMax.to(this.colors[0], 1, {
-        size: 0
-    }), TweenMax.to(this.colors[1], 1, {
-        size: .25
-    }), TweenMax.to(this.colors[2], 1, {
-        size: .25
-    }), TweenMax.to(this.colors[3], 1, {
-        size: .25
-    }), TweenMax.to(this.colors[4], 1, {
-        size: .25
-    }), TweenMax.to(this.colors[5], 1, {
-        size: 0
-    })) : "out" === t && (this.colors[0].hex = this.colors[5].hex, TweenMax.to(this.colors[0], 1, {
-        size: 1
-    }), TweenMax.to(this.colors[1], 1, {
-        size: 0
-    }), TweenMax.to(this.colors[2], 1, {
-        size: 0
-    }), TweenMax.to(this.colors[3], 1, {
-        size: 0
-    }), TweenMax.to(this.colors[4], 1, {
-        size: 0
-    }), TweenMax.to(this.colors[5], 1, {
-        size: 0,
-        onComplete: this.stopPlaying.bind(this)
-    }))
+    "in" === t ? 
+    (
+        TweenMax.to(this.colors[0], 1, {
+            size: 0
+        }), 
+        TweenMax.to(this.colors[1], 1, {
+            size: .25
+        }), 
+        TweenMax.to(this.colors[2], 1, {
+            size: .25
+        }), 
+        TweenMax.to(this.colors[3], 1, {
+            size: .25
+        }), 
+        TweenMax.to(this.colors[4], 1, {
+            size: .25
+        }), 
+        TweenMax.to(this.colors[5], 1, {
+            size: 0
+        })
+    ) : "out" === t && (
+        this.colors[0].hex = this.colors[5].hex, 
+        TweenMax.to(this.colors[0], 1, {
+            size: 1
+        }), 
+        TweenMax.to(this.colors[1], 1, {
+            size: 0
+        }), 
+        TweenMax.to(this.colors[2], 1, {
+            size: 0
+        }), 
+        TweenMax.to(this.colors[3], 1, {
+            size: 0
+        }), 
+        TweenMax.to(this.colors[4], 1, {
+            size: 0
+        }), 
+        TweenMax.to(this.colors[5], 1, {
+            size: 0,
+            onComplete: this.stopPlaying.bind(this)
+        })
+    )
 };
 IOWA.CountdownTimer.Band.prototype.onChangeComplete = function(t) {
     t.fadeTimer = setTimeout(function() {
@@ -104,19 +141,29 @@ IOWA.CountdownTimer.Band.prototype.getColor = function(t) {
 IOWA.CountdownTimer.Band.prototype.update = function() {
     if (this.isPlaying || this.parent.drawAll || this.needsRedraw) {
         var t = this.canvasElement.getContext("2d");
-        t.save(), t.scale(this.parent.pixelRatio, this.parent.pixelRatio), t.lineWidth = this.parent.strokeWeight, t.lineJoin = t.lineCap = "round";
+        t.save(), 
+        t.scale(this.parent.pixelRatio, this.parent.pixelRatio), 
+        t.lineWidth = this.parent.strokeWeight, 
+        t.lineJoin = t.lineCap = "round";
         var e = this.parent.bandGutter / 2,
             i = (this.parent.bandGutter + this.parent.bandPadding) / 2;
         t.clearRect(this.center.x - this.radius - e / 2, this.center.y - this.radius - i / 2, 2 * this.radius + e, 2 * this.radius + i);
-        for (var n, r = this.digits[this.oldShape].points, s = this.digits[this.currentShape].points, o = 0; o < s.length; o++) {
+        for (var n, 
+            r = this.digits[this.oldShape].points, 
+            s = this.digits[this.currentShape].points, 
+            o = 0; 
+            o < s.length; 
+            o++
+        ) {
             var a = o < s.length - 1 ? o + 1 : 0,
                 l = this.radius * (r[a].x + (s[a].x - r[a].x) * this.posShift) + this.center.x,
                 A = this.radius * (r[a].y + (s[a].y - r[a].y) * this.posShift) + this.center.y,
                 h = (o + this.strokeOffset) / s.length;
             h > 1 && (h = (o + this.strokeOffset - s.length) / s.length);
             var u = this.getColor(h);
-            if (u === n) t.lineTo(l, A);
-            else {
+            if (u === n) {
+                t.lineTo(l, A);
+            } else {
                 n && (t.strokeStyle = n, t.stroke());
                 var c = this.radius * (r[o].x + (s[o].x - r[o].x) * this.posShift) + this.center.x,
                     d = this.radius * (r[o].y + (s[o].y - r[o].y) * this.posShift) + this.center.y;
@@ -176,6 +223,7 @@ IOWA.CountdownTimer.Intro = function(t, e, i) {
             x: -2.6750303030303035,
             y: .9362575757575758
         }],
+
         [{
             x: -1.0463636363636364,
             y: -1.2858939393939395
@@ -193,7 +241,50 @@ IOWA.CountdownTimer.Intro = function(t, e, i) {
     this.circle = {
         x: 0,
         y: 0
-    }
+    },
+    this.colors = [{
+        hex: "#ffffff",
+        ratio: 1,
+        size: 1,
+        oldSize: 1,
+        active: !1,
+        tween: null
+    }, {
+        hex: "#EF5350",
+        ratio: 0,
+        size: 0,
+        oldSize: 0,
+        active: !1,
+        tween: null
+    }, {
+        hex: "#5C6BC0",
+        ratio: 0,
+        size: 0,
+        oldSize: 0,
+        active: !1,
+        tween: null
+    }, {
+        hex: "#26C6DA",
+        ratio: 0,
+        size: 0,
+        oldSize: 0,
+        active: !1,
+        tween: null
+    }, {
+        hex: "#8cf2f2",
+        ratio: 0,
+        size: 0,
+        oldSize: 0,
+        active: !1,
+        tween: null
+    }, {
+        hex: "#78909C",
+        ratio: 0,
+        size: 0,
+        oldSize: 0,
+        active: !1,
+        tween: null
+    }]
 };
 IOWA.CountdownTimer.Intro.prototype.update = function() {
     if (this.isFinished) return !0;
@@ -210,35 +301,47 @@ IOWA.CountdownTimer.Intro.prototype.update = function() {
             this.parent.bands[e].fade("in"), 
             this.firstRun = !1, 
             setTimeout(this.outro.bind(this), IOWA.CountdownTimer.INTRO_LENGTH)
-        ), 
-        this.parent.bands[e].update();
+        )
+        // this.parent.bands[e].update();
     } else {
-        t.save(),
-        t.scale(this.parent.pixelRatio, this.parent.pixelRatio), 
-        t.beginPath(), 
-        t.arc(this.circle.x + this.center.x, this.circle.y + this.center.y, this.radius, 0, 2 * Math.PI, !1), 
-        t.fillStyle = "#78909C", 
-        t.fill();
-        var i = this.count;
-        t.beginPath(),
-        t.arc(this.circle.x + this.center.x, this.circle.y + this.center.y, i, 0, 2 * Math.PI, !1), 
-        t.fillStyle = "#ffffff", 
-        t.fill(), 
-        t.restore()
+        // t.save(),
+        // t.scale(this.parent.pixelRatio, this.parent.pixelRatio), 
+        // t.beginPath(), 
+        // t.arc(this.circle.x + this.center.x, this.circle.y + this.center.y, this.radius, 0, 2 * Math.PI, !1), 
+        // t.fillStyle = "#78909C", 
+        // t.fill();
+        // var i = this.count;
+        // t.beginPath(),
+        // t.arc(this.circle.x + this.center.x, this.circle.y + this.center.y, i, 0, 2 * Math.PI, !1), 
+        // t.fillStyle = "#ffffff", 
+        // t.fill(), 
+        // t.restore()
     }
     t.save(), 
     t.scale(this.parent.pixelRatio, this.parent.pixelRatio);
-    for (var n = 0; n < this.rectangles.length; n++) {
-        t.beginPath(), 
-        t.moveTo(this.rectangles[n][0].x * this.radius + this.center.x, this.rectangles[n][0].y * this.radius + this.center.y);
-        for (var r = 1; r < this.rectangles[n].length; r++) {
-            t.lineTo(this.rectangles[n][r].x * this.radius + this.center.x, this.rectangles[n][r].y * this.radius + this.center.y);
-        }
-        t.lineTo(this.rectangles[n][0].x * this.radius + this.center.x, this.rectangles[n][0].y * this.radius + this.center.y), 
-        t.fillStyle = "#78909C", 
-        t.fill()
-    }
-    return t.restore(), !1
+
+    // t.strokeStyle = '#000';
+    t.lineWidth = 1;
+    t.fillStyle = "#78909C";
+    
+    
+    var logoPath = document.getElementById('path-logo').getAttribute('d')
+    var p = new Path2D(logoPath);
+    t.stroke(p);
+    t.fill(p);
+
+    // for (var n = 0; n < this.rectangles.length; n++) {
+    //     t.beginPath(), 
+    //     t.moveTo(this.rectangles[n][0].x * this.radius + this.center.x, this.rectangles[n][0].y * this.radius + this.center.y);
+    //     for (var r = 1; r < this.rectangles[n].length; r++) {
+    //         t.lineTo(this.rectangles[n][r].x * this.radius + this.center.x, this.rectangles[n][r].y * this.radius + this.center.y);
+    //     }
+    //     t.lineTo(this.rectangles[n][0].x * this.radius + this.center.x, this.rectangles[n][0].y * this.radius + this.center.y), 
+    //     t.fillStyle = "#78909C", 
+    //     t.fill()
+    // }
+    t.restore()
+    return !1
 };
 IOWA.CountdownTimer.Intro.prototype.start = function() {
     setTimeout(this.startTransition.bind(this), IOWA.CountdownTimer.INTRO_PAUSE)
@@ -302,20 +405,24 @@ IOWA.CountdownTimer.Core.prototype.detachEvents = function() {
 };
 IOWA.CountdownTimer.Core.prototype.setUp = function(t) {
     this.isReady || (
-        this.getDigits(), 
+        this.getDigits(),  // 设置数字path
         this.lastNumbers = this.unitDistance(this.targetDate, new Date), 
         this.bands = this.createBands(), 
         t || (
             this.intro = new IOWA.CountdownTimer.Intro(this.canvasElement, this.quality, this)
         ), 
         this.resetCanvas(), 
-        this.intro && this.intro.update(), 
+        this.intro && this.intro.update(),
         this.needsCanvasReset = !0, 
         this.isReady = !0
     )
 };
 IOWA.CountdownTimer.Core.prototype.play = function(t) {
-    this.isPlaying || (this.isReady || this.setUp(t), this.isPlaying = !0, this.onFrame())
+    this.isPlaying || (
+        this.isReady || this.setUp(t), 
+        this.isPlaying = !0, 
+        this.onFrame()
+    )
 };
 IOWA.CountdownTimer.Core.prototype.pause = function() {
     this.isPlaying && (this.isPlaying = !1)
@@ -327,30 +434,73 @@ IOWA.CountdownTimer.Core.prototype.checkTime = function() {
         this.containerDomElement.setAttribute("aria-label", e), this.containerDomElement.currentTime = e
     }
     if (this.isMobile && this.firstRun) {
-        this.bands[0].renderFlat(), this.bands[1].renderFlat(), this.bands[2].renderFlat(), this.bands[3].renderFlat(), this.bands[4].renderFlat(), this.bands[5].renderFlat(), this.bands[6].renderFlat(), this.bands[7].renderFlat();
+        this.bands[0].renderFlat(), 
+        this.bands[1].renderFlat(), 
+        this.bands[2].renderFlat(), 
+        this.bands[3].renderFlat(), 
+        this.bands[4].renderFlat(), 
+        this.bands[5].renderFlat(), 
+        this.bands[6].renderFlat(), 
+        this.bands[7].renderFlat();
         var i = t.minutes % 10;
         this.bands[5].oldShape = i, this.bands[5].currentShape = i, this.firstRun = !1
-    }(this.firstRun || this.lastNumbers.days !== t.days) && (this.bands[0].changeShape(Math.floor(t.days / 10)), this.bands[1].changeShape(t.days % 10)), (this.firstRun || this.lastNumbers.hours !== t.hours) && (this.bands[2].changeShape(Math.floor(t.hours / 10)), this.bands[3].changeShape(t.hours % 10)), (this.firstRun || this.lastNumbers.minutes !== t.minutes) && (this.bands[4].changeShape(Math.floor(t.minutes / 10)), this.bands[5].changeShape(t.minutes % 10)), (this.firstRun || this.lastNumbers.seconds !== t.seconds) && (this.bands[6].changeShape(Math.floor(t.seconds / 10)), this.bands[7].changeShape(t.seconds % 10)), this.lastNumbers = t, this.firstRun = !1
+    }
+    (this.firstRun || this.lastNumbers.days !== t.days) && (this.bands[0].changeShape(Math.floor(t.days / 10)), this.bands[1].changeShape(t.days % 10)), (this.firstRun || this.lastNumbers.hours !== t.hours) && (this.bands[2].changeShape(Math.floor(t.hours / 10)), this.bands[3].changeShape(t.hours % 10)), (this.firstRun || this.lastNumbers.minutes !== t.minutes) && (this.bands[4].changeShape(Math.floor(t.minutes / 10)), this.bands[5].changeShape(t.minutes % 10)), (this.firstRun || this.lastNumbers.seconds !== t.seconds) && (this.bands[6].changeShape(Math.floor(t.seconds / 10)), this.bands[7].changeShape(t.seconds % 10)), this.lastNumbers = t, this.firstRun = !1
 };
+// 动画关键
+// The window.requestAnimationFrame() method tells the browser that 
+//  you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint. 
+// The method takes an argument as a callback to be invoked before the repaint.
+// You should call this method whenever you're ready to update your animation onscreen. 
+// This will request that your animation function be called before the browser performs the next repaint. 
+// The number of callbacks is usually 60 times per second
 IOWA.CountdownTimer.Core.prototype.onFrame = function() {
     if (this.isPlaying) {
-        if (this.needsCanvasReset && this.resetCanvas(), this.intro) return this._onIntroFrame(), void requestAnimationFrame(this.onFrame);
-        this.mouseCoords && this.handleMouseShudder(), this.checkTime();
+        // if (this.needsCanvasReset && this.resetCanvas(), this.intro) 
+        // if (this.needsCanvasReset && this.resetCanvas()) 
+            // return this._onIntroFrame(), void requestAnimationFrame(this.onFrame);
+        this.mouseCoords && this.handleMouseShudder(), 
+        this.checkTime();
         var t, e = this.canvasElement.getContext("2d");
-        for (e.save(), e.scale(this.pixelRatio, this.pixelRatio), this.drawAll && e.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height), e.restore(), this.unitsAdded && !this.drawAll || (this.addUnits(), this.unitsAdded = !0), t = 0; t < this.bands.length; t++) this.bands[t].update();
-        "horizontal" === this.format && this.addSeparators(), requestAnimationFrame(this.onFrame)
+        for (
+            e.save(), 
+            e.scale(this.pixelRatio, this.pixelRatio), 
+            this.drawAll && e.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height), 
+            e.restore(), 
+            this.unitsAdded && !this.drawAll || (this.addUnits(), this.unitsAdded = !0), 
+            t = 0; 
+            t < this.bands.length; 
+            t++
+        ) {
+            this.bands[t].update();
+        }
+        
+        // this.logo.update();
+        "horizontal" === this.format && this.addSeparators(), 
+        requestAnimationFrame(this.onFrame)
     }
 };
 IOWA.CountdownTimer.Core.prototype._onIntroFrame = function() {
-    this.introRunning || (this.introRunning = !0, this.intro.start(), this.containerDomElement.fire("countdown-intro", {
-        start: !0
-    }));
+    this.introRunning || (
+        this.introRunning = !0, 
+        this.intro.start(),
+        this.containerDomElement.fire("countdown-intro", {
+            start: !0
+        })
+    );
     var t = this.canvasElement.getContext("2d");
-    t.save(), t.scale(this.pixelRatio, this.pixelRatio), t.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height), t.restore();
+    t.save(), 
+    t.scale(this.pixelRatio, this.pixelRatio), 
+    t.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height), 
+    t.restore();
     var e = this.intro.update();
-    e && (this.introRunning = !1, this.intro = null, this.containerDomElement.fire("countdown-intro", {
-        done: !0
-    }))
+    e && (
+        this.introRunning = !1, 
+        this.intro = null,
+        this.containerDomElement.fire("countdown-intro", {
+            done: !0
+        })
+    )
 };
 IOWA.CountdownTimer.Core.prototype.unitDistance = function(t, e) {
     var i = new Date(t - e).getTime() / 1e3,
@@ -421,7 +571,16 @@ IOWA.CountdownTimer.Core.prototype.addUnits = function() {
 IOWA.CountdownTimer.Core.prototype.addSeparators = function() {
     var t = this.canvasElement.getContext("2d");
     t.save(), t.scale(this.pixelRatio, this.pixelRatio);
-    for (var e = 0; e < this.separators.length; e++) t.clearRect(this.separators[e].x - 2, this.separators[e].y - 2, this.separators[e].w + 4, this.separators[e].h + 4), t.beginPath(), t.moveTo(this.separators[e].x, this.separators[e].y), t.lineTo(this.separators[e].x + this.separators[e].w, this.separators[e].y + this.separators[e].h), t.lineWidth = this.strokeWeight, t.strokeStyle = "#78909C", t.lineCap = "round", t.stroke();
+    for (var e = 0; e < this.separators.length; e++) {
+        t.clearRect(this.separators[e].x - 2, this.separators[e].y - 2, this.separators[e].w + 4, this.separators[e].h + 4), 
+        t.beginPath(), 
+        t.moveTo(this.separators[e].x, this.separators[e].y), 
+        t.lineTo(this.separators[e].x + this.separators[e].w, this.separators[e].y + this.separators[e].h), 
+        t.lineWidth = this.strokeWeight, 
+        t.strokeStyle = "#78909C", 
+        t.lineCap = "round", 
+        t.stroke();
+    }
     t.restore()
 };
 IOWA.CountdownTimer.Core.prototype.getSeparators = function() {
@@ -442,6 +601,7 @@ IOWA.CountdownTimer.Core.prototype.getDigits = function() {
         var e = this.getPath("path-" + t);
         this.digits[t] = e
     }
+    this.logoPath = this.getPath("path-logo");
 };
 IOWA.CountdownTimer.Core.prototype.getPath = function(t) {
     for (var e = 66, i = document.getElementById(t), n = i.getTotalLength(), r = this.quality, s = [], o = 0; r > o; o++) {
@@ -486,7 +646,12 @@ IOWA.CountdownTimer.Core.prototype.resetCanvas = function() {
     this.getLayout(),
     this.unitsAdded = !1;
     for (var e = 0; e < this.bands.length; e++) this.bands[e].radius = this.layout.radius, this.bands[e].center = this.getBandCenter(e), this.bands[e].redraw();
-    this.intro && (this.intro.radius = this.layout.radius, this.intro.center = "horizontal" === this.format ? this.getBandCenter(1) : this.getBandCenter(5)), this.getSeparators(), this.needsCanvasReset = !1
+    this.intro && (
+        this.intro.radius = this.layout.radius, 
+        this.intro.center = "horizontal" === this.format ? this.getBandCenter(1) : this.getBandCenter(5)
+    ), 
+    this.getSeparators(), 
+    this.needsCanvasReset = !1
 };
 IOWA.CountdownTimer.Core.prototype.setCanvasSize = function() {
     this.canvasElement.width = this.containerDomElement.offsetWidth * this.pixelRatio,
